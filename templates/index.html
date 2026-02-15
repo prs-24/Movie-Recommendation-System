@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System</title>
+    <style>body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0b0b0f;
+    color: white;
+    margin: 0;
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+form {
+    margin-bottom: 40px;
+}
+
+input {
+    padding: 12px;
+    width: 350px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #ff1f1f;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.movie-card {
+    position: relative;
+    background-color: #141414;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.07);
+    box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
+}
+
+.movie-card img {
+    width: 100%;
+    display: block;
+}
+
+.movie-card p {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.rating-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e50914;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.hero-banner {
+    position: relative;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    padding: 40px;
+}
+
+.hero-overlay {
+    background: linear-gradient(to right, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 600px;
+    text-align: left;
+}
+
+.hero-overlay h2 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero-rating {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.hero-genres {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.hero-overview {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+</style>
+</head>
+<body>
+
+    <h1>🎬 Movie Recommendation System</h1>
+
+    <form action="/recommend" method="post">
+        <input type="text" name="movie" placeholder="Enter movie name" required>
+        <button type="submit">Recommend</button>
+    </form>
+
+    {% if movie %}
+        <h2>Recommendations for "{{ movie }}"</h2>
+    {% endif %}
+
+    {% if hero %}
+    <div class="hero-banner"
+        style="background-image: url('https://image.tmdb.org/t/p/w1280{{ hero.backdrop }}');">
+
+        <div class="hero-overlay">
+            <h2>{{ hero.title }}</h2>
+
+            <div class="hero-rating">⭐ {{ hero.rating }}</div>
+
+            <div class="hero-genres">{{ hero.genres }}</div>
+
+            <div class="hero-overview">
+                {{ hero.overview }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="results">
+    {% if recommendations %}
+        {% for r in recommendations %}
+            <div class="movie-card">
+                {% if r.poster %}
+                    <img src="https://image.tmdb.org/t/p/w300{{ r.poster }}"
+                         onerror="this.style.display='none'">
+                {% endif %}
+                <div class="rating-badge">⭐ {{ r.rating }}</div>
+                <p>{{ r.title }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+
+</body>
+</html>
